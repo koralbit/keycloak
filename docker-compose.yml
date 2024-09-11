@@ -1,0 +1,75 @@
+﻿
+services:
+  
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_DB: keycloak_db
+      POSTGRES_USER: keycloak_user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - keycloak-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_PORT: 5432
+      DB_DATABASE: keycloak_db
+      DB_USER: keycloak_user
+      DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_password
+      KC_HOSTNAME: https://auth.local-keycloak.mx
+      KC_HOSTNAME_ADMIN: https://admin.local-keycloak.mx
+      KC_HTTP_ENABLED: true
+    command: start-dev
+    depends_on:
+      - postgres
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    networks:
+      - keycloak-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - nginx_data:/etc/nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - keycloak
+    networks:
+      - keycloak-network
+
+networks:
+  keycloak-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/postgres
+  keycloak_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/keycloak
+  nginx_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/nginx
