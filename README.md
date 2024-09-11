@@ -34,9 +34,9 @@ The `docker-compose.yml` file defines the services and their configurations.
     pwsh Setup.ps1 -Operation generate
     ```
 
-2. **Generate SSL Certificates (run as admin)**:
+2. **Import Certificates to Trusted Root (Run As Admin)**:
     ```sh
-    pwsh Setup.ps1 -Operation generate
+    pwsh Setup.ps1 -Operation import
     ```
 
 3. **Start Services**:
@@ -45,7 +45,7 @@ The `docker-compose.yml` file defines the services and their configurations.
     ```
 
 4. **Access Keycloak**:
-    - Admin Console: `https://admin.local-keycloak.mx`
+    - Admin Console: `https://admin.local-keycloak.mx` (admin/admin_password)
     - Authentication: `https://auth.local-keycloak.mx`
 
 ## Volumes
