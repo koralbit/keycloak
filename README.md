@@ -17,7 +17,7 @@ This project sets up a Keycloak server with Nginx as a reverse proxy and Postgre
 
 ### Certificates
 
-The `generate-wildcard-cert.ps1` script generates the necessary SSL certificates for Nginx. The configuration for the certificate is located in `config/cert/cert.cnf`.
+The `Setup.ps1` script generates the necessary SSL certificates for Nginx. The configuration for the certificate is located in `config/cert/cert.cnf`.
 
 ### Nginx Configuration
 
